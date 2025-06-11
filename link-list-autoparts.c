@@ -30,11 +30,12 @@ int main ()
 			  printf("\n");
 	      break;
       case 2:
-        //printf("\nEnter Item for deletion : ");
-	      //scanf ("%d", &value);
-	      //startPtr = removeItem (startPtr, value);
-	      //printList (startPtr);
-	      //printf("\n");
+         printf("\nEnter Part Id to Remove");
+	 scanf("%10s",partId);
+	 startPtr = removeItem(startPtr, partId);
+	 printList(startPtr);
+	 print("\n");
+	 break;
         break;
       case 3:
         printf("\nEnter Part Id to Update: ");
