@@ -36,7 +36,7 @@ int main ()
 	 printList(startPtr);
 	 print("\n");
 	 break;
-        break;
+        
       case 3:
         printf("\nEnter Part Id to Update: ");
         scanf("%10s", partId);
