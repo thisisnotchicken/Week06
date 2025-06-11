@@ -22,7 +22,7 @@ typedef struct item *ItemPtr;
 ItemPtr makeItem(char partId[ID_LENGTH], int partQuantity, char partType);
 ItemPtr addItem(ItemPtr sPtr, char partId[ID_LENGTH], int partQuantity, char partType);
 void printList(ItemPtr sPtr);
-// removeItem()
+ItemPtr removeItem(ItemPtr sPtr, char searchPartId[ID_LENGTH]);
 ItemPtr updateItem(ItemPtr sPtr, char searchPartId[ID_LENGTH]);
 void viewItem (ItemPtr sPtr, char partId[ID_LENGTH]);
 void displayMenuOptions ();
@@ -115,7 +115,35 @@ void viewItem(ItemPtr sPtr, char searchPartId[ID_LENGTH])\
 
 }
 
-// removeItem() {}
+ItemPtr removeItem(ItemPtr sPtr, char searchPartId[ID_LENGTH]){
+	ItemPtr previousPtr = NULL;
+	ItemPtr currentPtr  = sPtr;
+
+	if(currentPtr == NULL) {
+		puts("List is Empty..Nothing to Delete");
+		return sPtr;
+	}
+
+	while ( currentPtr != NULL && strcmp(searchPartId, currentPtr->partId) !=0){
+		previousPtr = currentPtr;
+		currentPtr = currentPtr->nextPtr;
+	}
+
+	if ( currentPtr == NULL ) {
+		printf("Part with ID '%s' was not found\n ", searchPartId);
+		return sPtr;
+	}
+	printf("Deleting Part: [ID: %s, Quantity : %d, Type : %c]\n", currentPtr->partId, currentPtr->partQuantity,currentPtr->partType);
+
+	if ( previousPtr == NULL ) {
+		sPtr = currentPtr->nextPtr;
+	}
+	else{
+		previousPtr->nextPtr = currentPtr->nextPtr;
+	}
+	free(currentPtr);
+	return sPtr;
+}
 
 ItemPtr updateItem(ItemPtr sPtr, char searchPartId[ID_LENGTH])
 {
