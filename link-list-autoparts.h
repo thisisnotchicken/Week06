@@ -17,14 +17,14 @@ struct item{
 typedef struct item Item;
 typedef struct item *ItemPtr;
 
-
-/*Function Prototypes*/
+/* Function Prototypes */
 ItemPtr makeItem(char partId[ID_LENGTH], int partQuantity, char partType);				//makeItem ();
 ItemPtr addItem(ItemPtr sPtr, char partId[ID_LENGTH], int partQuantity, char partType);	//addItem ();
 void printList(ItemPtr sPtr);				//printList ();
 //removeItem ();
+void updateItem(ItemPtr sPtr, char searchPartId[ID_LENGTH]);
 void viewItem (ItemPtr sPtr, char partId[ID_LENGTH]);
-void menu ();
+void displayMenuOptions ();
  
 /*******Function Definitions******/
 
@@ -56,7 +56,7 @@ ItemPtr addItem(ItemPtr sPtr, char partId[ID_LENGTH], int partQuantity, char par
 	// compares partIDs using strcmp for alphabetical ordering
 	while (currentPtr != NULL && strcmp(partId, currentPtr->partId) > 0){
 		previousPtr = currentPtr;
-		currentPtr = currentPtr->nextPtr;		
+		currentPtr = currentPtr->nextPtr;
 	}
 	
 	if(previousPtr == NULL){			//inserting at front
@@ -115,16 +115,46 @@ void viewItem(ItemPtr sPtr, char searchPartId[ID_LENGTH]){
 
 void updateItem(ItemPtr sPtr, char searchPartId[ID_LENGTH])
 {
-	// Implementation goes here
+	if (sPtr == NULL) {
+		printf("List is empty :\\\n");
+		return;
+	}
+
+	ItemPtr currPtr = sPtr;
+	printf("Searching for partID = %s\n", searchPartId);
+	while (currPtr->nextPtr != NULL && strcmp(currPtr->partId, searchPartId) != 0) {
+		currPtr = currPtr->nextPtr;
+	}
+
+	if (strcmp(currPtr->partId, searchPartId) == 0) {
+		printf("Part ID found! :D\n");
+		char newId[ID_LENGTH];
+		int newQuantity;
+		char newType;		
+
+		printf("\nEnter updated partId: ");
+        scanf("%10s", newId);
+        printf("\nEnter updated partQuantity: ");
+        scanf("%d", &newQuantity);
+        printf("\nEnter updated partType (single character, 'E' for Engine, 'B' for Brake): ");
+        scanf(" %c", &newType);
+
+		ItemPtr updatedItem = makeItem(newId, newQuantity, newType);
+		
+	} else {
+		printf("Part ID %s not found :(\n", searchPartId);
+	}
+
 }
 
-void menu () 
+void displayMenuOptions () 
 {
-	printf ("\t1: Insert Auto Part into Ordered List\n");
-	printf ("\t2: Remove Auto Part from List\n");
-	printf ("\t3: View Auto Part from List\n");
-	printf ("\t4: Printing the List\n");
-	printf ("\t5: Exit\n");
-	printf ("\tEnter Choice: ");
+	printf ("1: Insert Auto Part into Ordered List\n");
+	printf ("2: Remove Auto Part from List\n");
+	printf ("3: Update Auto Part from List\n");
+	printf ("4: View Auto Part from List\n");
+	printf ("5: Printing the List\n");
+	printf ("6: Exit\n");
+	printf ("Enter Choice: ");
 } 
  

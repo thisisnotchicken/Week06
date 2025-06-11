@@ -1,4 +1,4 @@
-//#include "" with double quotes is a custome header file
+//#include "" with double quotes is a custom header file
 #include "link-list-autoparts.h"		//Activity 1: include the link-list header file
  
 int main () 
@@ -8,49 +8,56 @@ int main ()
   
   char partId[11];
   int partQuantity;   
-  char partType;
-      
+  char partType;      
      
   int choice;
   
-  menu ();
-  scanf ("%d", &choice);
-  while (choice != 5)
+  while (choice != 6)
   {
+    displayMenuOptions();
+    scanf("%d", &choice);
     switch (choice) //Activity 4: Test your link list operations
     {
       case 1:
-        printf ("\nEnter Value for Part ID for Insertion: ");
-        scanf ("%10s", partId);
-        printf ("\nEnter Value for Part Quantity for Insertion: ");
-        scanf ("%d", &partQuantity);
-        printf ("\nEnter Value for Part Type for Insertion (single character, 'E' for Engine, 'B' for Brake): ");
-        scanf (" %c", &partType); 
-			  startPtr = addItem (startPtr, partId, partQuantity, partType);
-			  printList (startPtr);
-			  printf ("\n");
+        printf("\nEnter Value for Part ID for Insertion: ");
+        scanf("%10s", partId);
+        printf("\nEnter Value for Part Quantity for Insertion: ");
+        scanf("%d", &partQuantity);
+        printf("\nEnter Value for Part Type for Insertion (single character, 'E' for Engine, 'B' for Brake): ");
+        scanf(" %c", &partType); 
+			  startPtr = addItem(startPtr, partId, partQuantity, partType);
+			  printList(startPtr);
+			  printf("\n");
 	      break;
-      case 2: //printf ("\nEnter Item for deletion : ");
+      case 2:
+        //printf("\nEnter Item for deletion : ");
 	      //scanf ("%d", &value);
 	      //startPtr = removeItem (startPtr, value);
 	      //printList (startPtr);
-	      //printf ("\n");
+	      //printf("\n");
         break;
-      case 3: printf ("\nEnter Part ID to View : ");
-	      scanf ("%10s", partId);
-	      viewItem (startPtr, partId);
-	      printf ("\n");
+      case 3:
+        printf("\nEnter Part Id to Update: ");
+        scanf("%10s", partId);
+        updateItem(startPtr, partId);
+        printf("\n");
+        break;
+      case 4:
+        printf("\nEnter Part ID to View : ");
+	      scanf("%10s", partId);
+	      viewItem(startPtr, partId);
+	      printf("\n");
 	      break;
-      case 4: printList (startPtr);
-	      printf ("\n");
+      case 5: printList (startPtr);
+	      printf("\n");
 	      break;
+      case 6:
+        printf("Exiting...");
+        break;
       default:
-	      printf ("Invalid Option... Please Try Again \n");
+	      printf("Invalid Option... Please Try Again \n");
 	      break;
-    }
-      
-    menu ();
-    scanf ("%d", &choice);
+    }      
   }
   
 }// end of main
