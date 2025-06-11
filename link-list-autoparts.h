@@ -6,7 +6,8 @@
 #define ID_LENGTH 11
 
 // Structure Definition
-struct item{
+struct item
+{
 	char partId[ID_LENGTH];
 	int partQuantity;
 	char partType;
@@ -18,19 +19,20 @@ typedef struct item Item;
 typedef struct item *ItemPtr;
 
 /* Function Prototypes */
-ItemPtr makeItem(char partId[ID_LENGTH], int partQuantity, char partType);				//makeItem ();
-ItemPtr addItem(ItemPtr sPtr, char partId[ID_LENGTH], int partQuantity, char partType);	//addItem ();
-void printList(ItemPtr sPtr);				//printList ();
-//removeItem ();
-void updateItem(ItemPtr sPtr, char searchPartId[ID_LENGTH]);
+ItemPtr makeItem(char partId[ID_LENGTH], int partQuantity, char partType);
+ItemPtr addItem(ItemPtr sPtr, char partId[ID_LENGTH], int partQuantity, char partType);
+void printList(ItemPtr sPtr);
+// removeItem()
+ItemPtr updateItem(ItemPtr sPtr, char searchPartId[ID_LENGTH]);
 void viewItem (ItemPtr sPtr, char partId[ID_LENGTH]);
 void displayMenuOptions ();
  
 /*******Function Definitions******/
 
-//makeItem () {}
-ItemPtr makeItem(char partId[ID_LENGTH], int partQuantity, char partType){
+// Utility
 
+ItemPtr makeItem(char partId[ID_LENGTH], int partQuantity, char partType)
+{
 	ItemPtr newPtr = (ItemPtr)malloc(sizeof(Item));
 	
 	if(newPtr == NULL){
@@ -45,9 +47,10 @@ ItemPtr makeItem(char partId[ID_LENGTH], int partQuantity, char partType){
 
 }
 
-//addItem () {}
-ItemPtr addItem(ItemPtr sPtr, char partId[ID_LENGTH], int partQuantity, char partType){
+// Main Features
 
+ItemPtr addItem(ItemPtr sPtr, char partId[ID_LENGTH], int partQuantity, char partType)
+{
 	ItemPtr previousPtr, currentPtr, newPtr;
 	previousPtr = NULL;
 	currentPtr = sPtr;
@@ -66,12 +69,13 @@ ItemPtr addItem(ItemPtr sPtr, char partId[ID_LENGTH], int partQuantity, char par
 		previousPtr->nextPtr = newPtr;
 		newPtr->nextPtr = currentPtr;
 	}
+
 	return sPtr;
+
 }
 
-//printList () {}
-void printList(ItemPtr sPtr){
-	
+void printList(ItemPtr sPtr)
+{	
 	ItemPtr currentPtr = sPtr;
 	
 	if(currentPtr == NULL){
@@ -85,12 +89,11 @@ void printList(ItemPtr sPtr){
 			currentPtr = currentPtr->nextPtr;
 		}	
 	}
+
 }
 
-//viewItem (){}   //<-add this code block
-
-void viewItem(ItemPtr sPtr, char searchPartId[ID_LENGTH]){
-	
+void viewItem(ItemPtr sPtr, char searchPartId[ID_LENGTH])\
+{	
 	ItemPtr currentPtr = sPtr;
 	int position = 0;
 	
@@ -109,24 +112,28 @@ void viewItem(ItemPtr sPtr, char searchPartId[ID_LENGTH]){
 	} else {
 		printf("Part ID: %s\t Quantity: %d\tType: %c found at position %d\n", currentPtr->partId, currentPtr->partQuantity, currentPtr->partType, position+1);
 	}
+
 }
 
-//removeItem (){}
+// removeItem() {}
 
-void updateItem(ItemPtr sPtr, char searchPartId[ID_LENGTH])
+ItemPtr updateItem(ItemPtr sPtr, char searchPartId[ID_LENGTH])
 {
 	if (sPtr == NULL) {
 		printf("List is empty :\\\n");
-		return;
+		return sPtr;
 	}
 
+	ItemPtr previousPtr = NULL;
 	ItemPtr currPtr = sPtr;
+
 	printf("Searching for partID = %s\n", searchPartId);
-	while (currPtr->nextPtr != NULL && strcmp(currPtr->partId, searchPartId) != 0) {
+	while (currPtr != NULL && strcmp(currPtr->partId, searchPartId) != 0) {
+		previousPtr = currPtr;
 		currPtr = currPtr->nextPtr;
 	}
 
-	if (strcmp(currPtr->partId, searchPartId) == 0) {
+	if (currPtr != NULL && strcmp(currPtr->partId, searchPartId) == 0) {
 		printf("Part ID found! :D\n");
 		char newId[ID_LENGTH];
 		int newQuantity;
@@ -139,15 +146,25 @@ void updateItem(ItemPtr sPtr, char searchPartId[ID_LENGTH])
         printf("\nEnter updated partType (single character, 'E' for Engine, 'B' for Brake): ");
         scanf(" %c", &newType);
 
-		ItemPtr updatedItem = makeItem(newId, newQuantity, newType);
-		
+		ItemPtr updatePtr = makeItem(newId, newQuantity, newType);
+		updatePtr->nextPtr = currPtr->nextPtr;
+		free(currPtr);
+
+		if (previousPtr != NULL) {
+			previousPtr->nextPtr = updatePtr;
+		} else {
+			// Head node updated
+			return updatePtr;
+		}
 	} else {
 		printf("Part ID %s not found :(\n", searchPartId);
 	}
 
+	return sPtr;
+
 }
 
-void displayMenuOptions () 
+void displayMenuOptions() 
 {
 	printf ("1: Insert Auto Part into Ordered List\n");
 	printf ("2: Remove Auto Part from List\n");
@@ -156,5 +173,5 @@ void displayMenuOptions ()
 	printf ("5: Printing the List\n");
 	printf ("6: Exit\n");
 	printf ("Enter Choice: ");
-} 
- 
+}
+

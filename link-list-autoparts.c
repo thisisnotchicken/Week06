@@ -39,7 +39,7 @@ int main ()
       case 3:
         printf("\nEnter Part Id to Update: ");
         scanf("%10s", partId);
-        updateItem(startPtr, partId);
+        startPtr = updateItem(startPtr, partId);
         printf("\n");
         break;
       case 4:
